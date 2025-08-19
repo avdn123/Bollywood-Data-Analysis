@@ -47,3 +47,36 @@ SELECT movie_name, number_of_screens
 FROM bollywood
 ORDER BY number_of_screens DESC
 LIMIT 5 ;
+                 #### WHICH MOVIES WERE RELEASED ON THE Lowest NUMBER OF SCREENS? (TOP FIVE) ####
+SELECT movie_name, number_of_screens
+FROM bollywood
+ORDER BY number_of_screens ASC
+LIMIT 5 ;
+                       #### OVERALL PROFIT OF THE MOVIES WHICH WERE REMAKE ####
+SELECT SUM(revenue_inr - budget_inr) AS PROFIT
+from bollywood
+WHERE whether_remake = 'YES';
+                        #### WHO IS THE DIRECTORS IN MAXIMUM MOVIES? ####
+SELECT director, COUNT(*) AS total_movies
+FROM Bollywood
+GROUP BY director
+ORDER BY total_movies DESC
+LIMIT 1;
+                  #### MOST PROFIT GENERATING LEAD ACTORS.(TOP 3) ####
+SELECT lead_star, 
+       SUM(revenue_inr - budget_inr) AS total_profit
+FROM bollywood
+GROUP BY lead_star
+ORDER BY total_profit DESC
+LIMIT 3;
+#### COMBINATION OF PARTICULAR LEAD ACTOR AND DIRECTOR AND THEIR CONTRIBUTION ON BOX OFFICE. ####
+  SELECT lead_star, director,
+       SUM(revenue_inr) AS total_revenue,
+       SUM(budget_inr) AS total_budget,
+       SUM(revenue_inr - budget_inr) AS total_profit,
+       COUNT(*) AS total_movies
+FROM Bollywood
+GROUP BY lead_star, director
+ORDER BY total_profit DESC;
+
+
