@@ -1,40 +1,42 @@
-                   #### Top 5 profitable movies ####
+
+                 #### Top 5 profitable movies ####
 SELECT movie_name,(revenue_inr- budget_inr) as profit
 FROM bollywood
 ORDER BY profit DESC
 LIMIT 5;
+
                   #### Most revenue generating movies ####
-SELECT 
-    movie_name, 
-    revenue_inr
+SELECT movie_name, revenue_inr
 FROM bollywood
 WHERE revenue_inr = (SELECT MAX(revenue_inr) FROM bollywood);
-               
-               #### Actors who have worked in most movies ####
-SELECT 
-    Lead_Star, 
-    COUNT(*) AS total_movies
+                      
+          #### Actors who have worked in most movies ####
+SELECT Lead_Star,  COUNT(*) AS total_movies
 FROM bollywood
 GROUP BY lead_star
 ORDER BY total_movies DESC
 LIMIT 5;
+
                       #### MOST EXPENSIVE MOVIES (TOP 5) ####
 SELECT movie_name, budget_inr
 FROM bollywood
 ORDER BY budget_inr DESC
 LIMIT 5;
+
                         #### TOP REVENUE GENERATING GENRE ####
 SELECT genre, SUM(revenue_inr) AS total_revenue
 FROM bollywood
 GROUP BY genre
 ORDER BY total_revenue DESC
 LIMIT 1;
+
                 #### Finding the list of movies with new lead actors, new director and new music director #### 
 SELECT movie_name 
 FROM bollywood
 WHERE new_actor = 'YES'
 AND new_director = 'YES'
 AND new_music_director = 'YES';
+
                                 #### IMPACT OF RELEASE PERIOD ON BOX OFFICE ####
 SELECT release_period, 
        COUNT(*) AS total_movies,
@@ -42,26 +44,31 @@ SELECT release_period,
        AVG(revenue_inr) AS avg_revenue
 FROM bollywood
 GROUP BY release_period;  
+
                   #### WHICH MOVIES WERE RELEASED ON THE HIGHEST NUMBER OF SCREENS? (TOP FIVE) ####
 SELECT movie_name, number_of_screens
 FROM bollywood
 ORDER BY number_of_screens DESC
 LIMIT 5 ;
+
                  #### WHICH MOVIES WERE RELEASED ON THE Lowest NUMBER OF SCREENS? (TOP FIVE) ####
 SELECT movie_name, number_of_screens
 FROM bollywood
 ORDER BY number_of_screens ASC
 LIMIT 5 ;
+
                        #### OVERALL PROFIT OF THE MOVIES WHICH WERE REMAKE ####
 SELECT SUM(revenue_inr - budget_inr) AS PROFIT
 from bollywood
 WHERE whether_remake = 'YES';
+
                         #### WHO IS THE DIRECTORS IN MAXIMUM MOVIES? ####
 SELECT director, COUNT(*) AS total_movies
 FROM Bollywood
 GROUP BY director
 ORDER BY total_movies DESC
 LIMIT 1;
+
                   #### MOST PROFIT GENERATING LEAD ACTORS.(TOP 3) ####
 SELECT lead_star, 
        SUM(revenue_inr - budget_inr) AS total_profit
@@ -69,6 +76,7 @@ FROM bollywood
 GROUP BY lead_star
 ORDER BY total_profit DESC
 LIMIT 3;
+
 #### COMBINATION OF PARTICULAR LEAD ACTOR AND DIRECTOR AND THEIR CONTRIBUTION ON BOX OFFICE. ####
   SELECT lead_star, director,
        SUM(revenue_inr) AS total_revenue,
@@ -79,4 +87,37 @@ FROM Bollywood
 GROUP BY lead_star, director
 ORDER BY total_profit DESC;
 
+                    #### MOVIES WITH THE HIGHEST RETURN ON INVESTMENT (ROI) ####
+SELECT movie_name, revenue_inr, budget_inr, ((revenue_inr - budget_inr) * 100.0 / budget_inr) AS ROI_percent
+FROM Bollywood
+ORDER BY ROI_percent DESC;
 
+                  #### PERIOD-WISE TOTAL NUMBER OF MOVIES RELEASED ####
+SELECT release_period, COUNT(*) as number_of_movies
+FROM bollywood
+GROUP BY release_period;
+
+                  #### MOST FREQUENT MUSIC DIRECTORS IN MOVIES ####
+SELECT music_director, count(*) as movies
+From Bollywood
+group by music_director
+order by movies DESC
+LIMIT 5;
+
+             #### MOVIES WITH NEGATIVE PROFIT (LOSS-MAKING MOVIES) ####
+SELECT movie_name, (revenue_inr - budget_inr) as loss
+FROM bollywood
+WHERE (revenue_inr - budget_inr) < 0
+ORDER BY loss;
+
+                     #### GENRE-WISE AVERAGE SCREENS PER MOVIE ####
+SELECT genre, AVG(Number_of_Screens) AS AVERAGE_SCREEN
+FROM bollywood
+GROUP BY genre
+ORDER BY AVERAGE_SCREEN DESC;
+
+
+               #### AVERAGE REVENUE OF HOLIDAY RELEASES VS. NON-HOLIDAY RELEASES ####
+SELECT release_period, AVG(revenue_inr) AS Average_Revenue
+FROM bollywood
+GROUP BY release_period;
